@@ -13,7 +13,7 @@ int bomb_x[5], bomb_y[5];
 int check, width, checked;
 int chose_x[15], chose_y[15];
 int symbol, score;
-int AskRetry;
+int AskRetry, error;
 
 int WelcomeMsg (void){
 	printf("Welcome to boom-the-battleship. This game will test your skill of guessing and logic thinking.\n There is three difficulties for you to choose.Without further talking, let's start!\n\n" );
@@ -44,14 +44,15 @@ int SetShip(int diff){
 	srand(time(NULL));
 	for(counter = 0; counter < ship_num; counter++){
 		checked = 0;
-		while (!checked){
+		while (checked == 0){
 			ship_x[counter] = 1 + rand()%56;
 			ship_y[counter] = 1 + rand()%20;
 			checked = 1;
 			for(check = 0; check < counter; check++){
-				for(width = 0; width < 6; width++){
-					if(ship_y[counter] == ship_y[check] && ship_x[counter] == ship_x[check] + width){
-						checked = 1;
+				if(ship_y[counter] == ship_y[check]){
+					int check_x = ship_x[check] + 5;
+					if(ship_x[counter] <= ship_x[check] + 5 && ship_x[counter] >= ship_x[check] - 5){
+						checked = 0;
 					}
 				}
 			}
@@ -60,16 +61,25 @@ int SetShip(int diff){
 }
 
 int CheckMap(void){
-	printf("\nEnter location to boom (row, col): ");
-	scanf("%d, %d", &row, &col);
+	do{
+		error = 0;
+		printf("\nEnter location to boom (row, col): ");
+		scanf("%d, %d", &row, &col);
+		if (row > 20 || col > 60){
+			printf("Error! Row or column doesn't exist. Pleas input again.\n");
+			error = 1;
+		}
+	}while (error == 1);
 	chose_y[k] = row;
 	chose_x[k] = col;
 	k++;
 	for(i = 0; i < ship_num; i++){
-		if(row == ship_y[i] && col == ship_x[i]){
-			bomb_x[j] = ship_x[i];
-			bomb_y[j] = ship_y[i];
-			j++;
+		if(row == ship_y[i]){
+			if( col >= ship_x[i] && col <= ship_x[i] + 4){
+				bomb_x[j] = ship_x[i];
+				bomb_y[j] = ship_y[i];
+				j++;
+			}
 		}
 	}
 }
@@ -84,7 +94,7 @@ int PrintShip(void){
 	for(l = 0; l < j; l++){
 		printf("\n\nBOMB: %d, %d", bomb_y[l], bomb_x[l]);
 	}
-	printf("Score: %d", j);
+	printf("\nScore: %d", j);
 }
 
 int PrintMaps(void){
@@ -112,15 +122,17 @@ int PrintMaps(void){
 		printf("%2d", y);
 		printf(" ");
 		for (count_x = 1; count_x <= 60; count_x++){
+			for(n = 0; n < 5; n++){
+			if(count_y == bomb_y[n]){
+				if(count_x == bomb_x[n]){
+					count_x = count_x + 4;
+					symbol = 1;
+					goto sym;
+					}
+				}
+			}
 			for(i = 0; i <= 15; i++){
 				if(count_y == chose_y[i] && count_x == chose_x[i]){
-					for(n = 0; n < 5; n++){
-						if(count_y == bomb_y[n] && count_x == bomb_x[n]){
-							count_x = count_x + 4;
-							symbol = 1;
-							goto sym;
-						}
-					}
 					symbol = 2;
 					goto sym;
 				}
@@ -148,7 +160,7 @@ int CheckScore(void){
 		if(k < 10){
 			printf("\nExcellent! You are really talented!");
 		}
-		else if(k > 10 && k < 13){
+		else if(k >= 10 && k < 13){
 			printf("\nGood job! With a little bit more practice you can be better!");
 		}
 		else if(k > 13 && k < 16){
@@ -157,4 +169,3 @@ int CheckScore(void){
 	}
 	return AskRetry;
 }
-
