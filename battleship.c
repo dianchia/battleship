@@ -1,5 +1,5 @@
 #include <stdio.h>
-# include <battleship.h>
+#include <battleship.h>
 #include <stdlib.h>
 
 int diff, i;
@@ -7,9 +7,9 @@ char retry[1];
 int AskRetry;
 
 int main(void){
+	WelcomeMsg();
 	do{
 		Initialize();		
-		WelcomeMsg();
 		printf("Please choose a difficulty: (1-beginner, 2-intermediate, 3-advance)");
 		scanf("%d", &diff);
 		SetShip(diff);
