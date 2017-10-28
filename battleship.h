@@ -66,7 +66,7 @@ int CheckMap(void){
 	chose_x[k] = col;
 	k++;
 	for(i = 0; i < ship_num; i++){
-		if(row == ship_y[i] && col == ship_x[i] + ){
+		if(row == ship_y[i] && col == ship_x[i]){
 			bomb_x[j] = ship_x[i];
 			bomb_y[j] = ship_y[i];
 			j++;
