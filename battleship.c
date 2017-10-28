@@ -20,7 +20,6 @@ int main(void){
 			printf("\n\nYou still have %d bomb left.", bomb_count);
 			CheckMap();
 			bomb_count--;
-			printf("You still have %d bomb left.", bomb_count);
 			system("cls");
 			AskRetry = CheckScore();
 			if(AskRetry == 1){
