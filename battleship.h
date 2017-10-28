@@ -145,6 +145,15 @@ int CheckScore(void){
 	if (j == 5){
 		printf("Congratulation! You have won! You did it in %d attempts!\n", k);
 		AskRetry = 1;
+		if(k < 10){
+			printf("\nExcellent! You are really talented!");
+		}
+		else if(k > 10 && k < 13){
+			printf("\nGood job! With a little bit more practice you can be better!");
+		}
+		else if(k > 13 && k < 16){
+			printf("\nStill not bad. But you almost failed. Practice more and you can be good at this too.");
+		}
 	}
 	return AskRetry;
 }
