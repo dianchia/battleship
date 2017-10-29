@@ -12,11 +12,15 @@ int row, col;
 int bomb_x[5], bomb_y[5];
 int check, width, checked;
 int chose_x[15], chose_y[15];
-int symbol, score;
+int symbol, score, hit;
 int AskRetry, error;
 
 int WelcomeMsg (void){
-	printf("Welcome to boom-the-battleship. This game will test your skill of guessing and logic thinking.\n There is three difficulties for you to choose.Without further talking, let's start!\n\n" );
+	printf("Welcome to boom-the-battleship. This game will test your skill of guessing and logic thinking.\n");
+	printf("In this game you will have to destroy the ship that is scattered all across the map.\n");
+	printf("But here is the catch. The ship is invisible!\n");
+	printf("Good news is, you only have to destroy 5 ships then the enemy will flee.\n");
+	printf("There is three difficulties for you to choose.Without further talking, let's start! Good luck!\n\n" );
 }
 
 int Initialize(void){
@@ -50,7 +54,6 @@ int SetShip(int diff){
 			checked = 1;
 			for(check = 0; check < counter; check++){
 				if(ship_y[counter] == ship_y[check]){
-					int check_x = ship_x[check] + 5;
 					if(ship_x[counter] <= ship_x[check] + 5 && ship_x[counter] >= ship_x[check] - 5){
 						checked = 0;
 					}
@@ -79,11 +82,20 @@ int CheckMap(void){
 				bomb_x[j] = ship_x[i];
 				bomb_y[j] = ship_y[i];
 				j++;
+				hit = 1;
 			}
 		}
+		else
+			hit = 2;
 	}
 }
 
+int CheckHit(void){
+	if(hit = 1)
+		return 1;
+	else if (hit = 2)
+		return 2;
+}
 int PrintShip(void){
 	for (i = 0; i < ship_num; i++){
 	printf("\n%d.Coordinates: %d, %d", i, ship_y[i], ship_x[i]);
