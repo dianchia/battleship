@@ -5,6 +5,7 @@
 int diff, i;
 char retry[1];
 int AskRetry;
+int hit;
 
 int main(void){
 	WelcomeMsg();
@@ -17,8 +18,17 @@ int main(void){
 		while(bomb_count > 0){
 			PrintMaps();
 			PrintShip();
-			printf("\n\nYou still have %d bomb left.", bomb_count);
+			switch(hit){
+				case 1 : printf("\nYou hit a ship! %d more left.\n", (5-j));
+				break;
+				case 2 : printf("\nToo bad, you missed. There is no ship at that coordinate.\n");
+				break;
+				default : printf("\n");
+				break;
+			}
+			printf("\n\nYou still have %d bomb left.\n", bomb_count);
 			CheckMap();
+			hit = CheckHit();
 			bomb_count--;
 			system("cls");
 			AskRetry = CheckScore();
@@ -27,7 +37,7 @@ int main(void){
 			}
 		}
 		if(AskRetry == 1){
-			printf("Do you wish to retry? (Y or N)");
+			printf("\nDo you wish to retry? (Y or N)");
 			scanf("%1s", retry);
 		}
 		else{
