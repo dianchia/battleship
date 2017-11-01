@@ -172,7 +172,7 @@ int CheckScore(void){
 		if(k < 10){
 			printf("\nExcellent! You are really talented!");
 		}
-		else if(k >= 10 && k < 13){
+		else if(k >= 10 && k <= 13){
 			printf("\nGood job! With a little bit more practice you can be better!");
 		}
 		else if(k > 13 && k < 16){
