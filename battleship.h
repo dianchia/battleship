@@ -14,6 +14,9 @@ int check, width, checked;
 int chose_x[15], chose_y[15];
 int symbol, score, hit;
 int AskRetry, error;
+int ship_position[80][2];
+int chose_position[15][2];
+int bomb_ship[5][2];
 
 int WelcomeMsg (void){
 	printf("Welcome to boom-the-battleship. This game will test your skill of guessing and logic thinking.\n");
@@ -24,12 +27,6 @@ int WelcomeMsg (void){
 }
 
 int Initialize(void){
-	memset(ship_x, 0, 80* sizeof(ship_x[0]));
-	memset(ship_y, 0, 80* sizeof(ship_y[0]));
-	memset(bomb_x, 0, 5* sizeof(bomb_x[0]));
-	memset(bomb_y, 0, 5* sizeof(bomb_y[0]));
-	memset(chose_x, 0, 15* sizeof(chose_x[0]));
-	memset(chose_y, 0, 15* sizeof(chose_y[0]));
 	score = 0;
 	j = 0;
 	k = 0;
@@ -61,6 +58,10 @@ int SetShip(int diff){
 			}
 		}
 	}
+	for(i = 0; i < ship_num; i++){
+		ship_position[i][0] = ship_y[i];
+		ship_position[i][1] = ship_x[i];
+	}
 }
 
 int CheckMap(void){
@@ -73,38 +74,37 @@ int CheckMap(void){
 			error = 1;
 		}
 	}while (error == 1);
-	chose_y[k] = row;
-	chose_x[k] = col;
-	k++;
-	for(i = 0; i < ship_num; i++){
-		if(row == ship_y[i]){
-			if( col >= ship_x[i] && col <= ship_x[i] + 4){
-				bomb_x[j] = ship_x[i];
-				bomb_y[j] = ship_y[i];
+	chose_position[k][0] = row;
+	chose_position[k][1] = col;
+	hit = 2;
+	for(m = 0; m < ship_num; m++){
+		if(chose_position[k][0] == ship_position[m][0]){
+			if(chose_position[k][1] >= ship_position[m][1] && chose_position[k][1] <= ship_position[m][1] + 4){
+				bomb_ship[j][0] = ship_position[m][0];
+				bomb_ship[j][1] = ship_position[m][1];
 				j++;
 				hit = 1;
 			}
 		}
-		else
-			hit = 2;
 	}
+	k++;
 }
 
 int CheckHit(void){
-	if(hit = 1)
+	if(hit == 1)
 		return 1;
-	else if (hit = 2)
+	else if (hit == 2)
 		return 2;
 }
 int PrintShip(void){
 	for (i = 0; i < ship_num; i++){
-	printf("\n%d.Coordinates: %d, %d", i, ship_y[i], ship_x[i]);
+		printf("\n%d.Coordinates: %d, %d", i, ship_position[i][0], ship_position[i][1]);
 	}
 	for(m = 0; m < k; m++){
-		printf("\n\nChose: %d, %d", chose_y[m], chose_x[m]);
+		printf("\n\nChose: %d, %d", chose_position[m][0], chose_position[m][1]);
 	}
 	for(l = 0; l < j; l++){
-		printf("\n\nBOMB: %d, %d", bomb_y[l], bomb_x[l]);
+		printf("\n\nBOMB: %d, %d", bomb_ship[l][0], bomb_ship[l][1]);
 	}
 	printf("\nScore: %d", j);
 }
@@ -135,8 +135,8 @@ int PrintMaps(void){
 		printf(" ");
 		for (count_x = 1; count_x <= 60; count_x++){
 			for(n = 0; n < 5; n++){
-			if(count_y == bomb_y[n]){
-				if(count_x == bomb_x[n]){
+			if(count_y == bomb_ship[n][0]){
+				if(count_x == bomb_ship[n][1]){
 					count_x = count_x + 4;
 					symbol = 1;
 					goto sym;
@@ -144,7 +144,7 @@ int PrintMaps(void){
 				}
 			}
 			for(i = 0; i <= 15; i++){
-				if(count_y == chose_y[i] && count_x == chose_x[i]){
+				if(count_y == chose_position[i][0] && count_x == chose_position[i][1]){
 					symbol = 2;
 					goto sym;
 				}
